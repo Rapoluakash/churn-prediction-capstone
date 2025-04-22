@@ -1,10 +1,28 @@
-name: churn-prediction-env
-channels:
-  - defaults
-  - conda-forge
-dependencies:
-  - python=3.9
-  - pandas=1.5.3
-  - numpy=1.24.2
-  - scikit-learn=1.2.2
-  - xgboost=1.7.4
+name: Run Churn Prediction
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run script
+        run: python customer_churn_xgboost.py
